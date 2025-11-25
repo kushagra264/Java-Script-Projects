@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random password generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Generate a <br>
+       <span> Random Password </span></h1>
+        <div class="display">
+            <input type="text" id="password" placeholder="password">
+            <img src="images/copy.png" >
+        </div>
+        <button onclick="createPassword()"><img src="images/generate.png" >Generate Password</button>
+    </div>
+    <script>
+    const passwordBox = document.getElementById("password");
+    const length = 14;
+
+    const upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const lowerCase = "abcdefghijklmnopqrstuvwxyz";
+    const number = "0123456789";
+    const symbol = "!@#$%^&*()_+~`|}{[]:;?><,./-="; // Added more symbols for better security
+
+    const allChars = upperCase + lowerCase + number + symbol;
+
+    function createPassword() {
+        let password = "";
+        
+        // Ensure the password has a mix of all character types
+        password += upperCase[Math.floor(Math.random() * upperCase.length)];
+        password += lowerCase[Math.floor(Math.random() * lowerCase.length)];
+        password += number[Math.floor(Math.random() * number.length)];
+        password += symbol[Math.floor(Math.random() * symbol.length)];
+
+        // Fill the rest of the password with a random mix of all characters
+        while (length > password.length) {
+            password += allChars[Math.floor(Math.random() * allChars.length)];
+        }
+        
+        // Shuffle the final password to make it more random
+        password = password.split('').sort(() => 0.5 - Math.random()).join('');
+
+        passwordBox.value = password;
+    }
+
+    function copyPassword() {
+        passwordBox.select();
+        document.execCommand("copy"); // This method is deprecated but still works
+        alert("Password copied to clipboard!");
+    }
+    
+    // Attach event listeners
+    const copyIcon = document.querySelector(".display img");
+    copyIcon.addEventListener("click", copyPassword);
+</script>
+</body>
+</html>                        
